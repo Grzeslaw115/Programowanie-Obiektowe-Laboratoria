@@ -78,6 +78,6 @@ fabric.properties
 
 .idea/
 build/
-gradle/
+.gradle
 gradlew
 gradlew.bat
