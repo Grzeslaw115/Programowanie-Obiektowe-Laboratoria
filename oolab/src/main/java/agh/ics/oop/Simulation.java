@@ -44,7 +44,7 @@ public class Simulation {
             MoveDirection current_direction = directions.get(i);
 
             current_animal.move(current_direction);
-            System.out.println("Zwierzę " + (i % how_many_animals) + ": " + current_animal);
+            System.out.println("Zwierzę " + (i % how_many_animals) + ": " + current_animal.getPosition());
         }
     }
 }
