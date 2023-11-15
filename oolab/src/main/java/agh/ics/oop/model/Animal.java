@@ -72,4 +72,8 @@ public class Animal {
     public int hashCode() {
         return Objects.hash(position, orientation);
     }
+
+    public Vector2d getPosition() {
+        return this.position;
+    }
 }
