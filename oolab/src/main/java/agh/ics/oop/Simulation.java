@@ -13,14 +13,6 @@ public class Simulation {
     private List<MoveDirection> directions;
     private List<Animal> animals;
 
-    public List<Vector2d> getPositions() {
-        return positions;
-    }
-
-    public List<MoveDirection> getDirections() {
-        return directions;
-    }
-
     public List<Animal> getAnimals() {
         return animals;
     }
@@ -44,7 +36,7 @@ public class Simulation {
             MoveDirection current_direction = directions.get(i);
 
             current_animal.move(current_direction);
-            System.out.println("Zwierzę " + (i % how_many_animals) + ": " + current_animal.getPosition());
+            System.out.println("Zwierzę " + (i % how_many_animals) + ": " + current_animal);
         }
     }
 }

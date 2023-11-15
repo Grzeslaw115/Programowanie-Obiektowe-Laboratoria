@@ -52,13 +52,9 @@ public class Animal {
 
     @Override
     public String toString() {
-        return "pozycja = " + position.toString() +
-                ", orientacja = " + orientation;
+        return position.toString() + ", " + orientation;
     }
 
-    public Vector2d getPosition() {
-        return this.position;
-    }
 
     public MapDirection getOrientation() {
         return orientation;

@@ -30,13 +30,13 @@ class SimulationTest {
     @Test
     public void movement(){
         List<Vector2d> positions = Arrays.asList(new Vector2d(2, 2), new Vector2d(4, 4));
-        List<MoveDirection> directions = Arrays.asList(MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD,MoveDirection.FORWARD);
+        List<MoveDirection> directions = Arrays.asList(MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD,MoveDirection.FORWARD,MoveDirection.LEFT, MoveDirection.RIGHT, MoveDirection.FORWARD);
 
         Simulation simulation = new Simulation(positions, directions);
         simulation.run();
 
         List<Animal> animals = simulation.getAnimals();
-        assertTrue(animals.get(0).isAt(new Vector2d(2, 4)));
+        assertTrue(animals.get(0).isAt(new Vector2d(1, 4)));
         assertTrue(animals.get(1).isAt(new Vector2d(4, 4)));
     }
 
