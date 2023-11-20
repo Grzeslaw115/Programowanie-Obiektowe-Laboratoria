@@ -3,9 +3,6 @@ package agh.ics.oop.model;
 import java.util.Objects;
 
 public class Animal {
-    private static final int MIN_POSITION = 0;
-    private static final int MAX_POSITION = 4;
-
     private Vector2d position;
     private MapDirection orientation = MapDirection.NORTH;
 
@@ -21,43 +18,51 @@ public class Animal {
         return position.equals(this.position);
     }
 
-    public static boolean isBetween(int value, int minValue, int maxValue) {
-        return value >= minValue && value <= maxValue;
-    }
-
-    public void move(MoveDirection direction) {
+    public void move(MoveDirection direction, MoveValidator validator) {
         switch (direction) {
             case LEFT -> orientation = orientation.previous();
             case RIGHT -> orientation = orientation.next();
 
             case FORWARD -> {
                 Vector2d newPosition = position.add(orientation.toUnitVector());
-                if (isPositionValid(newPosition)) {
+                if (validator.canMoveTo(newPosition)) {
                     position = newPosition;
                 }
             }
             case BACKWARD -> {
                 Vector2d newPosition = position.add(orientation.toUnitVector().opposite());
-                if (isPositionValid(newPosition)) {
+                if (validator.canMoveTo(newPosition)) {
                     position = newPosition;
                 }
             }
         }
     }
 
-    private boolean isPositionValid(Vector2d newPosition) {
-        return isBetween(newPosition.getX(), MIN_POSITION, MAX_POSITION) &&
-                isBetween(newPosition.getY(), MIN_POSITION, MAX_POSITION);
-    }
-
     @Override
     public String toString() {
-        return position.toString() + ", " + orientation;
+        switch (orientation) {
+            case NORTH -> {
+                return "N";
+            }
+            case EAST -> {
+                return "E";
+            }
+            case SOUTH -> {
+                return "S";
+            }
+            case WEST -> {
+                return "W";
+            }
+        }
+        return "";
     }
 
 
     public MapDirection getOrientation() {
         return orientation;
+    }
+    public Vector2d getPosition() {
+        return this.position;
     }
 
     @Override
@@ -71,9 +76,5 @@ public class Animal {
     @Override
     public int hashCode() {
         return Objects.hash(position, orientation);
-    }
-
-    public Vector2d getPosition() {
-        return this.position;
     }
 }

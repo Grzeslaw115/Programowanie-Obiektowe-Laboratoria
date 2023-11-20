@@ -1,9 +1,6 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.MapDirection;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
-import agh.ics.oop.model.Animal;
+import agh.ics.oop.model.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -29,10 +26,11 @@ class SimulationTest {
 
     @Test
     public void movement(){
+        WorldMap map = new RectangularMap(5, 5);
         List<Vector2d> positions = Arrays.asList(new Vector2d(2, 2), new Vector2d(4, 4));
         List<MoveDirection> directions = Arrays.asList(MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.FORWARD,MoveDirection.FORWARD,MoveDirection.LEFT, MoveDirection.RIGHT, MoveDirection.FORWARD);
 
-        Simulation simulation = new Simulation(positions, directions);
+        Simulation simulation = new Simulation(positions, directions, map);
         simulation.run();
 
         List<Animal> animals = simulation.getAnimals();
@@ -99,6 +97,7 @@ class SimulationTest {
         List<MoveDirection> directions = Arrays.asList(MoveDirection.FORWARD, MoveDirection.FORWARD, MoveDirection.RIGHT, MoveDirection.RIGHT, MoveDirection.LEFT);
 
         Simulation simulationParsing = new Simulation(positions, OptionsParser.parseOptions(input));
+
         Simulation simulationDirections = new Simulation(positions, directions);
         simulationParsing.run();
         simulationDirections.run();
