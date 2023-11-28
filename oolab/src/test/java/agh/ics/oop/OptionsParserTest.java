@@ -11,7 +11,7 @@ class OptionsParserTest {
 
     @Test
     void parseOptions() {
-        String[] args = { "f", "b", "r", "x", "l", "y" };
+        String[] args = { "f", "b", "r", "x", "l", "y", "","litwo", "ojczyzno moja" };
 
         List<MoveDirection> result = OptionsParser.parseOptions(args);
 
