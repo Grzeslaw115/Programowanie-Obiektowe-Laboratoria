@@ -1,5 +1,6 @@
 package agh.ics.oop.model;
 
+import agh.ics.oop.exceptions.PositionAlreadyOccupiedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,15 +19,18 @@ class RectangularMapTest {
     @Test
     void place() {
         Animal animal1 = new Animal(new Vector2d(2, 2));
-        assertTrue(map.place(animal1));
-        assertFalse(map.place(animal1));
+        try {
+            map.place(animal1);
+        } catch (PositionAlreadyOccupiedException e) { //wyjatek nie powinien zostac tutaj rzucony
+            fail();
+        }
 
         Animal animal2 = new Animal(new Vector2d(2, 2));
-        assertFalse(map.place(animal2));
+        assertThrows(PositionAlreadyOccupiedException.class, () -> map.place(animal2));
     }
 
     @Test
-    void move() {
+    void move() throws PositionAlreadyOccupiedException {
         Animal animal = new Animal(new Vector2d(2, 2));
         map.place(animal);
         map.move(animal, MoveDirection.FORWARD);
@@ -47,14 +51,14 @@ class RectangularMapTest {
     }
 
     @Test
-    void isOccupied() {
+    void isOccupied() throws PositionAlreadyOccupiedException {
         assertFalse(map.isOccupied(new Vector2d(2, 2)));
         map.place(new Animal(new Vector2d(2, 2)));
         assertTrue(map.isOccupied(new Vector2d(2, 2)));
     }
 
     @Test
-    void objectAt() {
+    void objectAt() throws PositionAlreadyOccupiedException {
         Animal animal = new Animal(new Vector2d(2, 2));
         map.place(animal);
         assertEquals(animal, map.objectAt(new Vector2d(2, 2)));
@@ -62,7 +66,7 @@ class RectangularMapTest {
     }
 
     @Test
-    void getElements() {
+    void getElements() throws PositionAlreadyOccupiedException {
         Collection<WorldElement> elements = map.getElements();
         assertTrue(elements.isEmpty());
 

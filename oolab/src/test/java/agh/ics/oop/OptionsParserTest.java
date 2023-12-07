@@ -8,14 +8,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class OptionsParserTest {
-
     @Test
     void parseOptions() {
-        String[] args = { "f", "b", "r", "x", "l", "y", "","litwo", "ojczyzno moja" };
+        String[] validArgs = { "f", "b", "r", "l" };
+        List<MoveDirection> validResult = OptionsParser.parseOptions(validArgs);
+        List<MoveDirection> validExpected = List.of(MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT);
+        assertEquals(validExpected, validResult);
 
-        List<MoveDirection> result = OptionsParser.parseOptions(args);
+        String[] empty = {""};
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parseOptions(empty));
 
-        List<MoveDirection> expected = List.of(MoveDirection.FORWARD, MoveDirection.BACKWARD, MoveDirection.RIGHT, MoveDirection.LEFT);
-        assertEquals(expected, result);
+        String[] words = {"litwo ojczyzno moja"};
+        assertThrows(IllegalArgumentException.class, () -> OptionsParser.parseOptions(words));
     }
 }

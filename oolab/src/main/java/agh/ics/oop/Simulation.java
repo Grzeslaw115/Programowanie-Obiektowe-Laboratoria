@@ -1,9 +1,7 @@
 package agh.ics.oop;
 
-import agh.ics.oop.model.Animal;
-import agh.ics.oop.model.MoveDirection;
-import agh.ics.oop.model.Vector2d;
-import agh.ics.oop.model.WorldMap;
+import agh.ics.oop.exceptions.PositionAlreadyOccupiedException;
+import agh.ics.oop.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +16,18 @@ public class Simulation {
         return animals;
     }
 
-    public Simulation(List<Vector2d> positions, List<MoveDirection> directions, WorldMap worldMap){
+    public Simulation(List<Vector2d> positions, List<MoveDirection> directions, WorldMap worldMap) {
         this.directions = directions;
         this.animals = new ArrayList<>();
         this.worldMap = worldMap;
 
         for (Vector2d startingPosition : positions) {
-            Animal animal = new Animal(startingPosition);
-            if (worldMap.place(animal)) {
+            try {
+                Animal animal = new Animal(startingPosition);
+                worldMap.place(animal);
                 animals.add(animal);
+            } catch (PositionAlreadyOccupiedException e) {
+                System.err.println("Animal can't be placed at: " + startingPosition);
             }
         }
     }
@@ -40,9 +41,6 @@ public class Simulation {
             MoveDirection current_direction = directions.get(i);
 
             worldMap.move(current_animal, current_direction);
-
-            System.out.println("Zwierzę " + (i % how_many_animals) + ": " + current_animal.getPosition());
-            System.out.println(worldMap);
         }
     }
 }

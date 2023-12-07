@@ -1,8 +1,6 @@
 package agh.ics.oop.model;
 
-        import agh.ics.oop.model.util.MapVisualizer;
-
-        import java.util.*;
+import java.util.*;
 
 public class GrassField extends AbstractWorldMap {
     private final int numGrassPatches;
@@ -27,7 +25,7 @@ public class GrassField extends AbstractWorldMap {
     }
     @Override
     public boolean canMoveTo(Vector2d position) {
-        return !isOccupied(position);
+        return !animals.containsKey(position);
     }
 
     @Override
@@ -50,8 +48,7 @@ public class GrassField extends AbstractWorldMap {
     }
 
     @Override
-    public String toString() {
-        MapVisualizer mapVisualizer = new MapVisualizer(this);
+    public Boundary getCurrentBounds() {
         Vector2d lowerLeft = new Vector2d(Integer.MAX_VALUE, Integer.MAX_VALUE);
         Vector2d upperRight = new Vector2d(Integer.MIN_VALUE, Integer.MIN_VALUE);
 
@@ -61,7 +58,7 @@ public class GrassField extends AbstractWorldMap {
             upperRight = upperRight.upperRight(position);
         }
 
-        return mapVisualizer.draw(lowerLeft, upperRight);
+        return new Boundary(lowerLeft, upperRight);
     }
 
     @Override
@@ -71,5 +68,9 @@ public class GrassField extends AbstractWorldMap {
             allElements.add(new Grass(position));
         }
         return allElements;
+    }
+
+    public Set<Vector2d> getGrassPatches() {
+        return grassPatches;
     }
 }

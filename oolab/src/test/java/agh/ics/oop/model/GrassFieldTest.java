@@ -1,6 +1,6 @@
 package agh.ics.oop.model;
 
-import org.junit.jupiter.api.BeforeEach;
+import agh.ics.oop.exceptions.PositionAlreadyOccupiedException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collection;
@@ -10,23 +10,24 @@ import static org.junit.jupiter.api.Assertions.*;
 class GrassFieldTest {
     private GrassField grassField;
 
-    @BeforeEach
-    void setUp() {
-        grassField = new GrassField(10);
-    }
-
     @Test
     void place() {
+        grassField = new GrassField(10);
         Animal animal1 = new Animal(new Vector2d(2, 2));
-        assertTrue(grassField.place(animal1));
-        assertFalse(grassField.place(animal1));
+        try {
+            grassField.place(animal1);
+        } catch (PositionAlreadyOccupiedException e) { //wyjatek nie powinien zostac tu rzucony
+            fail();
+        }
 
         Animal animal2 = new Animal(new Vector2d(2, 2));
-        assertFalse(grassField.place(animal2));
+        assertThrows(PositionAlreadyOccupiedException.class, () -> grassField.place(animal2));
     }
 
     @Test
-    void move() {
+    void move() throws PositionAlreadyOccupiedException {
+        grassField = new GrassField(10);
+
         Animal animal = new Animal(new Vector2d(2, 2));
         grassField.place(animal);
         grassField.move(animal, MoveDirection.FORWARD);
@@ -47,22 +48,37 @@ class GrassFieldTest {
     }
 
     @Test
-    void isOccupied() {
-        assertFalse(grassField.isOccupied(new Vector2d(2, 2)));
+    void isOccupied() throws PositionAlreadyOccupiedException {
+        grassField = new GrassField(10);
+
+
         grassField.place(new Animal(new Vector2d(2, 2)));
         assertTrue(grassField.isOccupied(new Vector2d(2, 2)));
+
+        grassField = new GrassField(0);
+        assertFalse(grassField.isOccupied(new Vector2d(2, 2)));
     }
 
     @Test
-    void objectAt() {
+    void objectAt() throws PositionAlreadyOccupiedException {
+        grassField = new GrassField(10);
+
         Animal animal = new Animal(new Vector2d(2, 2));
         grassField.place(animal);
         assertEquals(animal, grassField.objectAt(new Vector2d(2, 2)));
-        assertNull(grassField.objectAt(new Vector2d(3, 3)));
+
+        if(grassField.getGrassPatches().contains(new Vector2d(3, 3))){
+            assertTrue(grassField.objectAt(new Vector2d(3, 3)) instanceof Grass);
+        }
+        else{
+            assertNull(grassField.objectAt(new Vector2d(3, 3)));
+        }
     }
 
     @Test
-    void getElements() {
+    void getElements() throws PositionAlreadyOccupiedException {
+        grassField = new GrassField(10);
+
         Collection<WorldElement> elements = grassField.getElements();
         assertFalse(elements.isEmpty());
 
@@ -71,6 +87,4 @@ class GrassFieldTest {
         elements = grassField.getElements();
         assertTrue(elements.contains(animal));
     }
-
-
 }

@@ -18,17 +18,19 @@ public class World {
         }
     }
 
-
     public static void main(String[] args) {
-        System.out.println("Start");
-        List<MoveDirection> directionList = OptionsParser.parseOptions(args);
-        run(directionList);
-        System.out.println("Stop");
+        try {
+            List<MoveDirection> directions = OptionsParser.parseOptions(args);
+            List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(2,5));
+            AbstractWorldMap worldMap = new GrassField(10);
 
-        List<MoveDirection> directions = OptionsParser.parseOptions(args);
-        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(2,5));
-        WorldMap worldMap = new GrassField(10);
-        Simulation simulation = new Simulation(positions, directions, worldMap);
-        simulation.run();
+            ConsoleMapDisplay consoleMapDisplay = new ConsoleMapDisplay();
+            worldMap.addMapChangeListener(consoleMapDisplay);
+
+            Simulation simulation = new Simulation(positions, directions, worldMap);
+            simulation.run();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Error in parsing options");
+        }
     }
 }

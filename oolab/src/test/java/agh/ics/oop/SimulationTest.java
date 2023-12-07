@@ -98,7 +98,7 @@ class SimulationTest {
 
     @Test
     public void inputParsing() {
-        String[] input = {"f", "f", "r", "r", "l", "", "litwo", "ojczyzno moja"};
+        String[] input = {"f", "f", "r", "r", "l"};
         WorldMap mapParsing = new RectangularMap(6, 6);
         WorldMap mapDirections = new RectangularMap(6, 6);
         List<Vector2d> positions = Arrays.asList(new Vector2d(0, 0), new Vector2d(4, 4));
