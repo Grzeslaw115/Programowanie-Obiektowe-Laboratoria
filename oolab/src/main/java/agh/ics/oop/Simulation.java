@@ -6,12 +6,12 @@ import agh.ics.oop.model.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Simulation {
+public class Simulation implements Runnable {
 
     private final List<MoveDirection> directions;
     private final List<Animal> animals;
+    private final List<Vector2d> positions;
     private final WorldMap worldMap;
-
     public List<Animal> getAnimals() {
         return animals;
     }
@@ -20,6 +20,10 @@ public class Simulation {
         this.directions = directions;
         this.animals = new ArrayList<>();
         this.worldMap = worldMap;
+        this.positions = positions;
+    }
+
+    public void run(){
 
         for (Vector2d startingPosition : positions) {
             try {
@@ -30,9 +34,7 @@ public class Simulation {
                 System.err.println("Animal can't be placed at: " + startingPosition);
             }
         }
-    }
 
-    public void run(){
         int how_many_animals = animals.size();
         int how_many_moves = directions.size();
 

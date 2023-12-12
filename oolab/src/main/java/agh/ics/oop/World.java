@@ -2,35 +2,34 @@ package agh.ics.oop;
 
 import agh.ics.oop.model.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class World {
-    public static void run(List<MoveDirection> args) {
-
-        for (MoveDirection direction : args) {
-            String message = switch (direction) {
-                case FORWARD -> "Zwierzak idzie do przodu";
-                case BACKWARD -> "Zwierzak idzie do tylu";
-                case LEFT -> "Zwierzak skreca w lewo";
-                case RIGHT -> "Zwierzak skreca w prawo";
-            };
-            System.out.println(message);
-        }
-    }
-
     public static void main(String[] args) {
         try {
             List<MoveDirection> directions = OptionsParser.parseOptions(args);
-            List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(2,5));
-            AbstractWorldMap worldMap = new GrassField(10);
+            List<Simulation> simulations = getSimulations(directions);
 
-            ConsoleMapDisplay consoleMapDisplay = new ConsoleMapDisplay();
-            worldMap.addMapChangeListener(consoleMapDisplay);
+            SimulationEngine simulationEngine = new SimulationEngine(simulations);
+            simulationEngine.run();
 
-            Simulation simulation = new Simulation(positions, directions, worldMap);
-            simulation.run();
         } catch (IllegalArgumentException e) {
             System.err.println("Error in parsing options");
         }
+    }
+
+    private static List<Simulation> getSimulations(List<MoveDirection> directions) {
+        List<Vector2d> positions = List.of(new Vector2d(2,2), new Vector2d(2,4));
+        List<Simulation> simulations = new ArrayList<>();
+        ConsoleMapDisplay consoleMapDisplay = new ConsoleMapDisplay();
+
+        for(int i = 0; i < 1000; i++){
+            AbstractWorldMap worldMap = new RectangularMap(10,10);
+            worldMap.addMapChangeListener(consoleMapDisplay);
+            Simulation simulation = new Simulation(positions, directions, worldMap);
+            simulations.add(simulation);
+        }
+        return simulations;
     }
 }

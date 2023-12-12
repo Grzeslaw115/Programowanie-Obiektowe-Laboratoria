@@ -9,6 +9,7 @@ public abstract class AbstractWorldMap implements WorldMap {
     protected final Map<Vector2d, Animal> animals;
     protected MapVisualizer mapVisualizer;
     protected final List<MapChangeListener> listeners = new ArrayList<>();
+    protected final UUID uuid = UUID.randomUUID();
 
     public void addMapChangeListener(MapChangeListener listener) {
         listeners.add(listener);
@@ -61,6 +62,10 @@ public abstract class AbstractWorldMap implements WorldMap {
     public String toString() {
         Boundary boundary = getCurrentBounds();
         return mapVisualizer.draw(boundary.lowerLeft(), boundary.upperRight());
+    }
+
+    public UUID getId() {
+        return uuid;
     }
 
     public abstract Boundary getCurrentBounds();
